@@ -39,12 +39,12 @@
          margin: 0.3em;
          font-size: 2.5em;
          font-family: Times New Roman;
-         color: #037087ff;
+         color: red;
       }
-      .post-div img {
+      #post_img {
          height: 80px;
          width: 80px;
-         border-radius: 50px;
+         border-radius: 50%;
          float: left;
          margin-right: 12px;
       }
@@ -60,7 +60,7 @@
       p {
          padding: 0 8%;
          font-size: 1.5em;
-         margin-buttom: 10px;
+         margin: 10px
       }
       .btn {
          padding: 10px;
@@ -76,9 +76,9 @@
          width: 60%;
          padding: 10px;
          background: #deebee;
+         margin: 5px;
          border-radius: 50px;
          border: #fff;
-         margin: 5px;
       }
       .comment {
          margin: 10px 0 0 0;
@@ -89,15 +89,36 @@
          border-radius: 50%;
          float: left;
       }
+      .user-comment {
+         margin: 1em 0.7em 0em 3em;
+         box-shadow: hsl(0, 0%, 80%) 0 0 10px;
+      }
+      .user-comment img{
+         height: 40px;
+         width: 40px;
+         border-radius: 50px;
+         float: left;
+         margin: 10px;
+      }
+      .user-comment p {
+         font-size: 12px;
+      }
+      .user-comment h3 {
+         padding-top: 12px;
+         padding-bottom: 6px;
+      }
+      .user-comment small {
+         margin-left: 10px;
+      }
+      .post-div {
+         margin: 10px 0px 8px 6px;
+      }
       #user {
          text-decoration: none;
       }
       #body-nav {
-         padding: 0% 10%;
+         padding: 0% 8%;
          justify-content: space-evenly;
-      }
-      #line {
-         
       }
    </style>
 </head>
@@ -105,46 +126,40 @@
    <header>
       <nav>
          <a id="user" href="{% url 'index' %}"><h1>{{ request.user }}</h1></a>
-         <div class="nav-links">
-            <a href="{% url 'logout' %}">logout</a>
-            <a href="{% url 'create_post' %}" class="new-post">New Post</a>
-         </div>
       </nav>
    </header>
    <main>
-      <h2 class="post">Posts</h2>
-      <hr id="line">
-      <br>
       <div class="post-div">
-       {% for post in posts %}
-         <img src="{{ post.owner.image.image.url }}" alt="user image">
-         <h4>{{ post.owner.username }}</h4>
+         <img id="post_img" src=" {{ post.owner.image.image.url }}" alt="user image">
+         <h4>{{post.owner.username }}</h4>
          <h5>{{ post.post_date|date:"M j, H:i" }}</h5>
          <p>{{ post.post_body }}</p>
-         <br>
          <div id="body-nav">
-	         <a href="{% url 'view_comment' post.id %}"><button class="btn">view comments({{ post.comment_set.count }})</button></a>
-	       {% if post.owner.username == request.user.username %}
-	         <a href="{% url 'update' post.id %}"><button class="btn">update</button></a>
-	         <a href="{% url 'confirm_delete' post.id %}"><button class="btn">delete</button></a>
-	       {% endif %}
+         {% if post.owner.username == request.user.username %}
+	         <button class="btn">update</button>
+	         <button class="btn">delete</button>
+	    {% endif %}
          </div>
          <div class="comment">
             <form action="" method="post">
-                {% csrf_token %}
-                <img id="sender_image" src="{{ request.user.image.image.url  }}" alt="user photo">
-               <a href="{% url 'view_comment' post.id %}"><input type="text" name="comment" placeholder="write a comment"></a>
+            {% csrf_token %}
+               <img id="sender_image" src="{{ request.user.image.image.url }}" alt="sender img">
+               <input type="text" name="comment" placeholder="write a comment">
                <button class="btn">send</button>
-               <br>
-               <br>
-               <hr>
-               <br>
             </form>
          </div>
-           {% empty %}
-         	<h3 align="center"> No post yet!!!</h3>
-           {% endfor %}
       </div>
+      <section>
+      <hr>
+         {% for comment in comments %}
+         <div class="user-comment">
+            <img src="{{ comment.comment_owner.image.image.url }}" alt="post image">
+            <h3>{{ comment.comment_owner.username}}</h3>
+            <p>{{ comment.comment }}</p>
+            <small>{{ comment.comment_date|date:"M j, H:i" }}</small>
+         </div>
+         {% endfor %}
+      </section>
    </main>
 </body>
 </html>
