@@ -6,7 +6,7 @@ class Image(models.Model):
 	image = models.ImageField(upload_to="user_image")
 	
 	def __str__(self):
-		return self.user.username
+		return self.user
 		
 class Post(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)

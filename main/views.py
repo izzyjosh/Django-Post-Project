@@ -3,18 +3,88 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 import re
 from django.contrib.auth.decorators import login_required
-
+from .models import *
+from django.db.models import Count
+from .forms import *
 
 @login_required(login_url="signin")
 def index(request):
-	return render(request, "index.html")
+	
+	posts = Post.objects.all().order_by("post_date").reverse()
+	comments = Comment.objects.all().annotate(
+		num_comment=Count("comment")
+		)
+	
+	context = {
+		"posts":posts, 
+		"comments":comments, 
+	}
+	if request.method == "POST":
+		comment = request.POST.get("comment")
+		
+		
+	return render(request, "index.html", context)
 	
 
+def create_post(request):
+	if request.method == "POST":
+		post = request.POST.get("post")
+		
+		Post.objects.create(
+			owner = request.user, 
+			post_body = post, 
+		)
+		return redirect("index")
+	return render(request, "post.html")
+
+
+def view_comment(request, post_id):
+	post = Post.objects.get(id=post_id)
+	
+	comments = Comment.objects.filter(post_owner=post).order_by("comment_date").reverse()
+	
+	if request.method == "POST":
+		comment= request.POST.get("comment")
+		
+		Comment.objects.create(
+			comment = comment, 
+			post_owner = post, 
+			comment_owner = request.user
+		)
+		return redirect("view_comment", post_id=post_id)
+	context = {
+		"comments":comments, 
+		"post":post
+	}
+	return render(request, "view_comment.html", context)
+	
+	
+def delete(request, post_id):
+	post = Post.objects.get(id=post_id)
+	post.delete()
+	return redirect("index")
+	
+
+def confirm_delete(request, post_id):
+	post = Post.objects.get(id=post_id)
+	return render(request, "confirm.html", {"post":post})
+	
+
+def update(request, post_id):
+	post = Post.objects.get(id=post_id)
+	form = PostForm(request.POST or None, instance=post)
+	
+	if form.is_valid():
+		form.save()
+		return redirect("index")
+	return render(request, "form.html", {"form":form})
+
+		
 def signup(request):
 	
 	#function to validate password 
 	def validate_password(password):
-	       regular_expression = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$"
+	       regular_expression = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,1000}$"
 	       pattern = re.compile(regular_expression)
 	       valid = re.search(pattern, password)
 	       return valid
