@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Hompage</title>
+   <style>
+      * {
+         padding: 0;
+         margin: 0;
+         box-sizing: border-box;
+      }
+      body {
+         height: 100vh;
+      }
+      nav {
+         background: #86e1f7ff;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 1.5em 5%;
+         font-size: 0.9em;
+         
+      }
+      .nav-links a {
+         text-decoration: none;
+         margin: 0 0.5em;
+         
+      }
+      .new-post {
+         background: yellow;
+         color: #000;
+         padding: 0.8em;
+         border-radius: 50px;
+      }
+      .btn {
+         padding: 10px;
+         background: #ea7d05;
+         box-shadow: hsl(0,0%,80%) 0 0 10px;
+         border-radius: 50px;
+         margin: 5px;
+         border: #fff;
+         
+      }
+      #confirm-div {
+         padding: 1em;
+         margin: 1em;
+         border-radius: 50px;
+         box-shadow: hsl(0,0%,80%) 0 0 10px;
+      }
+      #user {
+         text-decoration: none;
+      }
+      
+   </style>
+</head>
+<body>
+   <header>
+      <nav>
+         <a id="user" href="{% url 'index' %}"><h1>{{ request.user }}</h1></a>
+      </nav>
+   </header>
+   <main>
+      <div id="confirm-div">
+         <p>Are you sure you want to delete this post ?</p>
+         <a href="{% url 'delete' post.id %}"><button class="btn">yes</button></a>
+         <a href="{% url 'index' %}"><button class="btn">no</button></a>
+      </div>
+   </main>
+</body>
+</html>
