@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Hompage</title>
+   <style>
+      * {
+         padding: 0;
+         margin: 0;
+         box-sizing: border-box;
+      }
+      body {
+         height: 100vh;
+      }
+      nav {
+         background: #86e1f7ff;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 1.5em 5%;
+         font-size: 0.9em;
+         
+      }
+      .nav-links a {
+         text-decoration: none;
+         margin: 0 0.5em;
+         
+      }
+      .new-post {
+         background: yellow;
+         color: #000;
+         padding: 0.8em;
+         border-radius: 50px;
+      }
+      .update-post {
+         margin: 1em;
+         padding: 1em;
+         box-shadow: hsl(0, 0%, 80%) 0 0 10px;
+      }
+      .update-post h2 {
+         padding: 1em 0 1em 2em;
+         color: #037087ff;
+         
+         
+      }
+      .update-post img {
+         height: 60px;
+         width: 60px;
+         border-radius: 50%;
+         margin-right: 10px;
+         float: left;
+      }
+      .update-post textarea {
+         height: 160px;
+         width: 210px;
+         box-shadow: hsl(0, 0%, 80%) 0 0 10px;
+         border: none;
+      }
+      .btn {
+         padding: 10px;
+         background: #fff;
+         box-shadow: hsl(0,0%,80%) 0 0 10px;
+         border-radius: 50px;
+         margin: 5px;
+         border: #fff;
+         margin-left: 70px;
+      }
+      #user {
+         text-decoration: none;
+      }
+   </style>
+</head>
+<body>
+   <header>
+      <nav>
+         <a id="user" href="{% url 'index' %}"><h1>{{ request.user }}</h1></a>
+         <div class="nav-links">
+            <a href="{% url 'create_post' %}" class="new-post">New Post</a>
+         </div>
+      </nav>
+   </header>
+   <main>
+      <div class="update-post">
+         <h2>update post</h2>
+            <img src="{{ request.user.image.image.url }}" alt="user image">
+            <form action="" method="post">
+            {% csrf_token%}
+            {{ form.as_p }}
+         <button class="btn">save</button>
+         </form>
+      </div>
+   </main>
+</body>
+</html>
