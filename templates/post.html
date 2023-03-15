@@ -49,6 +49,7 @@
          width: 250px;
          border: none;
          box-shadow: hsl(0, 0%, 80%) 0 0 10px;
+         padding: 0.6em;
       }
       button {
          padding: 1em;
@@ -61,6 +62,9 @@
       }
       #user {
          text-decoration: none;
+      }
+      .post {
+         padding: 0.6em;
       }
    </style>
 </head>
@@ -76,7 +80,7 @@
          <img src="{{ request.user.image.image.url }}" alt="user image" loading="lazy">
          <form action="" method="post">
              {% csrf_token %}
-            <textarea name="post" id="" placeholder="content"></textarea>
+            <textarea name="post" id="" placeholder="content" required ></textarea>
             <button>post</button>
          </form>
       </div>

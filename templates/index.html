@@ -35,8 +35,7 @@
          border-radius: 50px;
       }
       .post {
-         padding: 12px 30%;
-         margin: 0.3em;
+         text-align: center;
          font-size: 2.5em;
          font-family: Times New Roman;
          color: #037087ff;
@@ -93,11 +92,13 @@
          text-decoration: none;
       }
       #body-nav {
-         padding: 0% 10%;
+         padding: 0% 5%;
          justify-content: space-evenly;
       }
-      #line {
-         
+      .post-div {
+         padding: 0.8em;
+         margin: 0 0.5em;
+         box-shadow: hsl(0, 0%, 80%) 0 0 10px;
       }
    </style>
 </head>
@@ -113,7 +114,6 @@
    </header>
    <main>
       <h2 class="post">Posts</h2>
-      <hr id="line">
       <br>
       <div class="post-div">
        {% for post in posts %}
@@ -130,10 +130,10 @@
 	       {% endif %}
          </div>
          <div class="comment">
-            <form action="" method="post">
+            <form action="{% url 'view_comment' post.id%}" method="post">
                 {% csrf_token %}
                 <img id="sender_image" src="{{ request.user.image.image.url  }}" alt="user photo">
-               <a href="{% url 'view_comment' post.id %}"><input type="text" name="comment" placeholder="write a comment"></a>
+               <input type="text" name="comment" placeholder="write a comment" required>
                <button class="btn">send</button>
                <br>
                <br>
