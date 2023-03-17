@@ -21,6 +21,10 @@
          align-items: center;
          padding: 1.5em 5%;
          font-size: 0.9em;
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
          
       }
       .nav-links a {
@@ -35,14 +39,27 @@
          border-radius: 50px;
       }
       .post {
-         text-align: center;
-         font-size: 2.5em;
-         font-family: Times New Roman;
-         color: #037087ff;
+         margin: 6em 0.5em 1em 0.5em;
+      }
+      .post img {
+         height: 35px;
+         width:35px;
+         border-radius: 50%;
+         float: left;
+         margin-right: 8px;
+      }
+      .post input {
+         padding: 10px;
+         border-radius: 50px;
+         width: 80%;
+         background: #deebee;
+         border: none;
+         outline: none;
+         
       }
       .post-div img {
-         height: 80px;
-         width: 80px;
+         height: 70px;
+         width: 70px;
          border-radius: 50px;
          float: left;
          margin-right: 12px;
@@ -66,8 +83,9 @@
          background: #fff;
          box-shadow: hsl(0,0%,80%) 0 0 10px;
          border-radius: 50px;
-         margin: 5px;
+         margin-left: 8px;
          border: #fff;
+         outline: none;
          
       }
       .comment input {
@@ -77,16 +95,17 @@
          background: #deebee;
          border-radius: 50px;
          border: #fff;
-         margin: 5px;
+         outline: none;
       }
       .comment {
          margin: 10px 0 0 0;
       }
       #sender_image {
-         height: 40px;
-         width: 40px;
+         height: 35px;
+         width: 35px;
          border-radius: 50%;
          float: left;
+         margin-right: 8px;
       }
       #user {
          text-decoration: none;
@@ -113,14 +132,17 @@
       </nav>
    </header>
    <main>
-      <h2 class="post">Posts</h2>
+   <div class="post">
+   	<img src="{{ request.user.image.image.url }}" alt="user image" loading="lazy">
+   	<a href="{% url 'create_post' %}"><input type="text" placeholder="write a post"></a>
+   </div>
       <br>
       <div class="post-div">
        {% for post in posts %}
          <img src="{{ post.owner.image.image.url }}" alt="user image">
          <h4>{{ post.owner.username }}</h4>
          <h5>{{ post.post_date|date:"M j, H:i" }}</h5>
-         <p>{{ post.post_body }}</p>
+         <p>{{ post.post_body|linebreaks }}</p>
          <br>
          <div id="body-nav">
 	         <a href="{% url 'view_comment' post.id %}"><button class="btn">view comments({{ post.comment_set.count }})</button></a>
