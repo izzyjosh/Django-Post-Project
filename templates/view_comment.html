@@ -69,6 +69,7 @@
          border-radius: 50px;
          margin: 5px;
          border: #fff;
+         outline: none;
          
       }
       .comment input {
@@ -79,6 +80,7 @@
          margin: 5px;
          border-radius: 50px;
          border: #fff;
+         outline: none;
       }
       .comment {
          margin: 10px 0 0 0;
@@ -106,6 +108,10 @@
       .user-comment h3 {
          padding-top: 12px;
          padding-bottom: 6px;
+         margin-bottom: 20px;
+      }
+      .usercomment {
+         margin-left: 4em;
       }
       .user-comment small {
          margin-left: 10px;
@@ -144,7 +150,7 @@
             <form action="" method="post">
             {% csrf_token %}
                <img id="sender_image" src="{{ request.user.image.image.url }}" alt="sender img">
-               <input type="text" name="comment" placeholder="write a comment" required>
+               <input name="comment" placeholder="write a comment" required>
                <button class="btn">send</button>
             </form>
          </div>
@@ -155,7 +161,7 @@
          <div class="user-comment">
             <img src="{{ comment.comment_owner.image.image.url }}" alt="post image">
             <h3>{{ comment.comment_owner.username}}</h3>
-            <p>{{ comment.comment }}</p>
+            <div class="usercomment">{{comment.comment}}</div>
             <small>{{ comment.comment_date|date:"M j, H:i" }}</small>
          </div>
          {% endfor %}
