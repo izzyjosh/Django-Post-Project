@@ -79,6 +79,33 @@ def update(request, post_id):
 		return redirect("index")
 	return render(request, "form.html", {"form":form})
 
+
+def profile(request):
+	if request.method == "POST":
+		first_name = request.POST.get("first-name")
+		last_name = request.POST.get("last-name")
+		email = request.POST.get("email")
+		phone_number  = request.POST.get("phone number")
+		birthday = request.POST.get("birthday")
+		photo = request.FILES.get("photo")
+		
+		Image.objects.create(
+			user=request.user, 
+			image=photo
+		)
+		
+		User.objects.create(
+			first_name=first_name, 
+			last_name=last_name
+		)
+		
+		Profile.objects.create(
+			owner=request.user, 
+			phone_number=phone_number, 
+			date_of_birth=birthday
+		)
+		return redirect("index")
+	return render(request, "profile.html")
 		
 def signup(request):
 	

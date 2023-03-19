@@ -12,5 +12,6 @@ class PostAdmin(admin.ModelAdmin):
 	search_fields = ("post_body", )
 	
 admin.site.register(Image)
+admin.site.register(Profile)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)

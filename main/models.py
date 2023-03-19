@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Image(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, unique=False)
 	image = models.ImageField(upload_to="user_image")
 	
 	def __str__(self):
@@ -24,3 +24,12 @@ class Comment(models.Model):
 	
 	def __str__(self):
 		return self.comment
+		
+class Profile(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	image = models.ImageField(upload_to"userimage")
+	phone_number = models.IntegerField()
+	date_of_brith = models.DateField()
+	
+	def __str__(self):
+		return self.owner.username
