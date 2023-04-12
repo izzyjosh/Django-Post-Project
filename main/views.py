@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 import re
@@ -84,20 +84,22 @@ def profile(request):
 	if request.method == "POST":
 		first_name = request.POST.get("first-name")
 		last_name = request.POST.get("last-name")
-		email = request.POST.get("email")
 		phone_number  = request.POST.get("phone number")
 		birthday = request.POST.get("birthday")
 		photo = request.FILES.get("photo")
 		
-		Image.objects.create(
+		image,  _ = Image.objects.get_or_create(
 			user=request.user, 
-			image=photo
 		)
 		
-		User.objects.create(
-			first_name=first_name, 
-			last_name=last_name
-		)
+		image.image = photo
+		
+		user = get_object_or_404(User,  id=request.user.id)
+		
+		user.first_name=first_name, 
+		user.last_name=last_name
+		
+		user.save()
 		
 		Profile.objects.create(
 			owner=request.user, 
@@ -106,7 +108,17 @@ def profile(request):
 		)
 		return redirect("index")
 	return render(request, "profile.html")
+
 		
+def updateprofile(request, user_id):
+	user = User.objects.get(id=user_id)
+	form = UpdateProfile(request.POST or None, instance=user)
+	if form.is_valid():
+		form.save()
+		return redirect("index")
+	return render(request, "profile.html", {"form":form})
+	
+			
 def signup(request):
 	
 	#function to validate password 

@@ -77,13 +77,7 @@
       <h2>upgrade profile</h2>
       <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-         <input type="text" name="first-name" placeholder="first-name" required>
-         <input type="text" name="last-name" placeholder="last-name" required>
-         <input type="tel" name="phone" placeholder="phone number">
-         <label for="birthday">birthday</label>
-         <input type="date" name="birthday">
-         <label for="photo">profile photo</label>
-         <input type="file" name="photo">
+		{{form.as_p}}
          <button>save</button>
          <button>skip</button>
       </form>
